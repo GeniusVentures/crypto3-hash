@@ -31,17 +31,26 @@
 #include <nil/crypto3/hash/detail/keccak/keccak_impl.hpp>
 
 #if BOOST_ARCH_X86_64
-#if defined(CRYPTO3_HAS_AVX512)
-#include <nil/crypto3/hash/detail/keccak/keccak_avx512_impl.hpp>
-#else
-#if defined(CRYPTO3_HAS_AVX2)
-#include <nil/crypto3/hash/detail/keccak/keccak_avx2_impl.hpp>
-#else
-#include <nil/crypto3/hash/detail/keccak/keccak_x86_64_impl.hpp>
-#endif
-#endif
+    #if defined(CRYPTO3_HAS_AVX512)
+        #include <nil/crypto3/hash/detail/keccak/keccak_avx512_impl.hpp>
+    #else
+        #if defined(CRYPTO3_HAS_AVX2)
+            #include <nil/crypto3/hash/detail/keccak/keccak_avx2_impl.hpp>
+        #else
+            #include <nil/crypto3/hash/detail/keccak/keccak_x86_64_impl.hpp>
+        #endif
+    #endif
 #elif BOOST_ARCH_ARM
-#include <nil/crypto3/hash/detail/keccak/keccak_armv8_impl.hpp>
+    #if defined(__ARM_ARCH_8A__) || defined(__aarch64__)
+        #include <nil/crypto3/hash/detail/keccak/keccak_armv8_impl.hpp>
+    #else
+        #if defined(__ARM_ARCH_7A__) || defined(__ARM_ARCH_7R__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__)
+            #include <nil/crypto3/hash/detail/keccak/keccak_armv7_impl.hpp>
+            //#error "Unsupported ARM7 LOL"
+        #else
+            #error "Unsupported ARM architecture"
+        #endif
+    #endif
 #endif
 
 namespace nil {
