@@ -20,7 +20,8 @@ Hashes library architecture consists of several parts listed below:
 5. Accumulators
 6. Value Processors
 
-@dot digraph hash_arch { 
+```graphviz
+digraph hash_arch { 
 bgcolor="#151515"
 rankdir="TB"
 node [shape="box"]
@@ -40,7 +41,8 @@ d -> e;
 e -> f; 
 f -> g;
 
-} @enddot
+}
+```
 
 ## Algorithms {#hashes_algorithms}
 
@@ -110,19 +112,20 @@ to appropriate size integers (words in the cryptography meaning, not machine wor
 
 Example. Lets assume input data stream consists of 16 bytes as follows.
 
-@dot digraph bytes { 
+```graphviz
+digraph bytes { 
 bgcolor="#151515"
 node [shape=record color="#f5f2f1" fontcolor="#f5f2f1" fontname="helvetica"];
 
-struct1 [label="0x00 | 0x01 | 0x02 | 0x03 | 0x04 | 0x05 | 0x06 | 0x07 | 0x08 | 0x09 | 0x10 | 0x11 | 0x12 | 0x13 | 0x14 | 0x15"]
-;
-
-} @enddot
+struct1 [label="0x00 | 0x01 | 0x02 | 0x03 | 0x04 | 0x05 | 0x06 | 0x07 | 0x08 | 0x09 | 0x10 | 0x11 | 0x12 | 0x13 | 0x14 | 0x15"];
+}
+```
 
 Lets assume the selected hash to be used is SHA2 with 32 bit word size and 512 bit block size. This means input data
 stream needs to be converted to 32 bit words and merged to 512 bit blocks as follows:
 
-@dot digraph bytes_to_words { 
+```graphviz
+digraph bytes_to_words { 
 bgcolor="#151515"
 node [shape=record color="#f5f2f1" fontcolor="#f5f2f1" fontname="helvetica"];
 
@@ -144,7 +147,7 @@ struct1:b12 -> struct2:w3 struct1:b13 -> struct2:w3 struct1:b14 -> struct2:w3 st
 
 struct2:w0 -> struct3:bl0 struct2:w1 -> struct3:bl0 struct2:w2 -> struct3:bl0 struct2:w3 -> struct3:bl0 }
 
-@enddot
+```
 
 Now with this a [`Hash`](@ref hashes_concept) instance of [`SHA2`](@ref hashes::sha2)
 can be fed.
